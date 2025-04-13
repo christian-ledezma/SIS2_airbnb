@@ -1,0 +1,24 @@
+{
+	"name": "ds_dim_day",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_airbnb_dw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DW"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "day",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DIM_DAY"
+		}
+	}
+}

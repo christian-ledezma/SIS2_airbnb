@@ -1,0 +1,25 @@
+{
+	"name": "ds_dim_bedrooms",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_airbnb_dw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DW"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "bedroons",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DIM_BEDROOMS"
+		}
+	}
+}

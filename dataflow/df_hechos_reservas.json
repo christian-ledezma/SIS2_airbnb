@@ -1,0 +1,103 @@
+{
+	"name": "df_hechos_reservas",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_airbnb_csv",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_hechos_reservas",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          City as string,",
+				"          Price as decimal(9,2),",
+				"          Day as string,",
+				"          {Room Type} as string,",
+				"          {Shared Room} as string,",
+				"          {Private Room} as boolean,",
+				"          {Person Capacity} as integer,",
+				"          Superhost as string,",
+				"          {Multiple Rooms} as string,",
+				"          Business as string,",
+				"          {Cleanliness Rating} as decimal(9,1),",
+				"          {Guest Satisfaction} as decimal(9,1),",
+				"          Bedrooms as integer,",
+				"          {City Center (km)} as string,",
+				"          {Metro Distance (km)} as string,",
+				"          {Attraction Index} as string,",
+				"          {Normalised Attraction Index} as string,",
+				"          {Restraunt Index} as string,",
+				"          {Normalised Restraunt Index} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 select(mapColumn(",
+				"          City,",
+				"          Price,",
+				"          Day,",
+				"          {Room Type},",
+				"          {Private Room},",
+				"          {Person Capacity},",
+				"          {Cleanliness Rating},",
+				"          {Guest Satisfaction},",
+				"          Bedrooms",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          reserva_id as integer,",
+				"          city as string,",
+				"          day as string,",
+				"          room_type as string,",
+				"          private_room as boolean,",
+				"          person_capacity as integer,",
+				"          cleanliness_rating as decimal(9,1),",
+				"          guest_satisfaction as decimal(9,1),",
+				"          bedrooms as integer,",
+				"          price as decimal(9,2)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          city = City,",
+				"          day = Day,",
+				"          room_type = {Room Type},",
+				"          private_room = {Private Room},",
+				"          person_capacity = {Person Capacity},",
+				"          cleanliness_rating = {Cleanliness Rating},",
+				"          guest_satisfaction = {Guest Satisfaction},",
+				"          bedrooms = Bedrooms,",
+				"          price = Price",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
